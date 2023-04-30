@@ -57,5 +57,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         },
         // 插件
         plugins: [uni(), Unocss()],
+        transpileDependencies: ['uview-plus'],
     };
 };

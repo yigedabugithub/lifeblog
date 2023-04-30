@@ -22,7 +22,7 @@
         /* 严格检查选项 */
         "strict": true, // 开启所有严格的类型检查
         "alwaysStrict": true, // 在代码中注入'use strict'
-        "noImplicitAny": true, // 不允许隐式的any类型
+        "noImplicitAny": false, // 不允许隐式的any类型
         "noImplicitThis": true, // 不允许this有隐式的any类型
         "strictNullChecks": true, // 在进行类型检查时，请考虑null和undefined。
         "strictBindCallApply": true, // 检查bind、call和apply方法的参数是否与原始函数匹配。
