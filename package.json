@@ -52,6 +52,7 @@
         "@dcloudio/uni-mp-toutiao": "3.0.0-alpha-3080120230425001",
         "@dcloudio/uni-mp-weixin": "3.0.0-alpha-3080120230425001",
         "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-3080120230425001",
+        "@dcloudio/uni-ui": "^1.4.27",
         "@fortawesome/fontawesome-free": "^6.4.0",
         "@iconify/iconify": "^3.1.0",
         "alova": "^2.2.0",
