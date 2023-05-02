@@ -4,9 +4,7 @@ import { useAuthStore } from '@/store/modules/auth';
 import { removeInterceptor, setupInterceptors } from '@/utils/interceptors';
 import { useRouterStore } from '@/store/modules/router';
 onLaunch(() => {
-    console.log('App Launch');
     removeInterceptor();
-
     setupInterceptors();
     const appStore = useRouterStore();
     appStore.initialize();
@@ -14,11 +12,8 @@ onLaunch(() => {
 onShow(() => {
     const authStore = useAuthStore();
     authStore.initToken();
-    console.log('App Show');
 });
-onHide(() => {
-    console.log('App Hide');
-});
+onHide(() => {});
 </script>
 <style lang="scss">
 @import '@/static/css/main.scss';

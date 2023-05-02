@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import { useRouter } from '@/hooks/router';
+const router = useRouter();
+
+const toArticle = () => {
+    router.push('/pages/article/index');
+};
 
 const sysInfo = uni.getSystemInfoSync();
-console.log(sysInfo, 'sysInfo');
 
-// import List from '@/components/List/index.vue';
-// import { ref } from 'vue';
 const list2 = [
     {
         image: 'https://cdn.uviewui.com/uview/swiper/swiper2.png',
@@ -65,10 +68,6 @@ const urls = [
     'https://cdn.uviewui.com/uview/album/10.jpg',
 ];
 
-// const loadall = (scrollLeft, scrollTop, scrollHeight, scrollWidth, deltaX, deltaY) => {
-//     console.log(scrollLeft, scrollTop, scrollHeight, scrollWidth, deltaX, deltaY, '触发');
-// };
-
 const indexList = ref([] as any);
 const scrolltolower = () => {
     loadmore();
@@ -93,7 +92,7 @@ onMounted(() => {
 
         <view class="home-search">
             <view style="width: 250px">
-                <u-search bgColor="#f5f5f5" :showAction="false" :disabled="true" placeholder="搜索文章"></u-search>
+                <u-search bgColor="#f5f5f5" :showAction="false" :disabled="true" placeholder="搜索文章" @click="toArticle"></u-search>
             </view>
         </view>
         <swiper class="swiper-box" circular :indicator-dots="true" :autoplay="true" :interval="2000" :duration="500">

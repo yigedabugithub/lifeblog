@@ -37,6 +37,15 @@
             "meta": {
                 "ignoreAuth": true
             }
+        },
+        {
+            "path": "pages/article/index",
+            "style": {
+                "navigationBarTitleText": "文章"
+            },
+            "meta": {
+                "ignoreAuth": true
+            }
         }
     ],
     "globalStyle": {
