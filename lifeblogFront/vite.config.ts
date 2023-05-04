@@ -23,20 +23,23 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         // 开发服务器配置
         server: {
             host: true,
-            // open: true,
+            open: true,
             port: env.VITE_PORT as any,
-            proxy: {
-                '/api': {
-                    target: env.VITE_BASE_URL,
-                    changeOrigin: true,
-                    rewrite: (path) => path.replace(/^\/api/, ''),
-                },
-                '/upload': {
-                    target: env.VITE_BASE_URL,
-                    changeOrigin: true,
-                    rewrite: (path) => path.replace(/^\/upload/, ''),
-                },
-            },
+            // proxy: {
+            //     [env.VITE_BASE_URL]: {
+            //         // target: env.VITE_BASE_URL,
+            //         // target: 'https://mock.mengxuegu.com/mock/642f6ad832affa39a121cd95/moocblog',
+            //         target: 'http://127.0.0.1:3000/api',
+            //         changeOrigin: true,
+            //         // rewrite: (path) => path.replace(/^\/api/, ''),
+            //         rewrite: (path) => path.replace(new RegExp('^' + env.VITE_BASE_URL), ''),
+            //     },
+            //     '/upload': {
+            //         target: env.VITE_BASE_URL,
+            //         changeOrigin: true,
+            //         rewrite: (path) => path.replace(/^\/upload/, ''),
+            //     },
+            // },
         },
         // 构建配置
         build: {

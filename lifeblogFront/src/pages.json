@@ -41,7 +41,8 @@
         {
             "path": "pages/article/index",
             "style": {
-                "navigationBarTitleText": "文章"
+                "navigationBarTitleText": "文章",
+                "navigationBarBackgroundColor": "#fff"
             },
             "meta": {
                 "ignoreAuth": true
@@ -68,12 +69,7 @@
                 "iconPath": "static/images/tabBar/home.png",
                 "selectedIconPath": "static/images/tabBar/selectedHome.png"
             },
-            {
-                "pagePath": "pages/demo/index",
-                "text": "Demo",
-                "iconPath": "static/images/tabBar/demo.png",
-                "selectedIconPath": "static/images/tabBar/selectedDemo.png"
-            },
+
             {
                 "pagePath": "pages/about/index",
                 "text": "关于",

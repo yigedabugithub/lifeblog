@@ -22,15 +22,15 @@ const HEADER = {
 const alovaInstance = createAlova({
     baseURL: BASE_URL,
     ...AdapterUniapp({
-        /* #ifndef APP-PLUS */
-        mockRequest: isUseMock() ? mockUrl : undefined, // APP 平台无法使用mock
-        /* #endif */
+        mockRequest: isUseMock() ? mockUrl : undefined, //
     }),
     timeout: 5000,
+
     beforeRequest: (method) => {
         const authStore = useAuthStore();
         method.config.headers = assign(method.config.headers, HEADER, authStore.getAuthorization);
     },
+    // 全局的响应拦截器
     responsed: {
         /**
          * 请求成功的拦截器
@@ -43,7 +43,8 @@ const alovaInstance = createAlova({
             const { enableDownload, enableUpload } = config;
             // @ts-ignore
             const { statusCode, data: rawData } = response;
-            const { code, message, data } = rawData as API;
+
+            const { code, msg, data } = rawData as API;
             if (statusCode === 200) {
                 if (enableDownload) {
                     // 下载处理
@@ -54,13 +55,13 @@ const alovaInstance = createAlova({
                     return rawData;
                 }
                 if (code === ResultEnum.SUCCESS) {
-                    return data as any;
+                    return rawData as any;
                 }
-                message && Toast(message);
+                msg && Toast(msg);
                 return Promise.reject(rawData);
             }
-            checkStatus(statusCode, message || '');
-            return Promise.reject(rawData);
+            checkStatus(statusCode, msg || '');
+            return Promise.resolve(rawData);
         },
 
         /**

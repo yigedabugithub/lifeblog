@@ -22,32 +22,21 @@
     <a href="https://iconify.design/" target="_blank">
         <img src="https://img.shields.io/badge/-Iconify-1769aa?logo=Iconify" />
     </a>
-    <a href="https://gitee.com/h_mo/uniapp-vue3-vite-ts-template" target="_blank">
-    	<img src="https://svg.hamm.cn/gitee.svg?type=star&user=h_mo&project=uniapp-vue3-vite-ts-template"/>
-    </a>
-    <a href="https://gitee.com/h_mo/uniapp-vue3-vite-ts-template" target="_blank">
-    	<img src="https://svg.hamm.cn/gitee.svg?type=fork&user=h_mo&project=uniapp-vue3-vite-ts-template"/>
-    </a>
-    <a href="https://ext.dcloud.net.cn/plugin?id=8559" target="_blank">
-        <img src="https://svg.hamm.cn/badge.svg?key=Platform&value=uni-app"/>
+    <a href="https://github.com/yigedabugithub/lifeblog" target="_blank">
+    	<img src="https://github.com/yigedabugithub/lifeblog"/>
     </a>
 </p>
 
 ## 简介
 
 -   **uni-app Vue3 Vite4 pinia2 TypeScript 基础框架**
--   cli 创建的 Vue3/Vite 项目 与 使用 HBuilderX 导入插件 的包有差异,请直接访问 [开源地址](https://gitee.com/h_mo/uniapp-vue3-vite-ts-template)
--   访问[uniapp 插件](https://ext.dcloud.net.cn/plugin?id=8559)
+-   cli 创建的 Vue3/Vite4 项目 请直接访问 [项目地址](https://github.com/yigedabugithub/lifeblog)
 
 ### 说明
 
 -   框架完全基于 Vue3 SFC `<script setup>` 写法,不支持 Vue2;
 -   可用于学习与交流;
--   目前测试 H5、微信小程序,APP(Android),支付宝小程序通过;
--   其他平台暂未测试,后续会增加;
--   如发现问题或建议可在评论区留言, 或提[Issues](https://gitee.com/h_mo/uniapp-vue3-vite-ts-template/issues)及[PR](https://gitee.com/h_mo/uniapp-vue3-vite-ts-template/pulls),会及时处理;
--   如有需求亦可在评论区留言,或在此项目基础上增加;
--   [代码规范 & 详细解释 husky、prettier、eslint、lint-staged 的作用和使用](https://blog.csdn.net/cookcyq__/article/details/125457031)
+-   目前只测试微信小程序其他平台暂未测试,后续会增加;
 
 ## 特性
 
@@ -57,15 +46,16 @@
 -   **路由拦截**: 基于 uni.addInterceptor 进行路由拦截;
 -   **请求拦截**: 使用[alova 请求](https://github.com/alovajs/alova),支持请求和响应拦截等;
 -   **Mock 数据**: 配合 alova 请求的[@alova/mock](https://github.com/alovajs/mock)，模拟 api 请求(App 不支持);
--   **缓存加密**: 支持 AES 加密缓存,可设置区分在开发或生成环境中是否加密;
 
 ## 目录结构
 
 ```shell
 .
 ├─ src
+│   ├─assets # 静态资源目录
+│   │
 │   ├─components # 组件目录
-│   │   ├─ BasicButton
+│   │   ├─ Button
 │   │   │    ├─index.vue
 │   │   │    └─prpos.ts
 │   │   └─...
@@ -79,17 +69,16 @@
 │   │   │    └─index.vue
 │   │   └─...
 │   │
-│   ├─services # 接口相关
-│   │   ├─ api # api
-│   │   │    ├─auth.ts
-│   │   │    └─...
+│   ├─api # 接口相关
+│   │   ├─ auth.ts
+│   │   ├─ ...
 │   │   │
 │   │   └─ model # 数据模型
 │   │        ├─authModel.d.ts
 │   │        └─...
 │   │
 │   ├─settings # 设置
-│   │   └─ encryptionSetting # 加密设置
+│   │   
 │   │
 │   ├─store # 状态管理模式(pinia)
 │   │   ├─ modules # 数据模块
@@ -99,6 +88,7 @@
 │   │   └─ index.ts
 │   │
 │   ├─static # 静态公共文件
+│   │   ├─ css # 样式文件
 │   │   ├─ images # 图片
 │   │   │    ├─avatar.png
 │   │   │    └─...
@@ -126,7 +116,7 @@
 ├─ favicon.ico
 ├─ index.html
 ├─ package.json
-├─ pnpm-lock.yaml
+├─ npm-lock.yaml
 ├─ README.md
 ├─ tree.txt
 ├─ tsconfig.json
@@ -134,54 +124,25 @@
 
 ```
 
-## 预览
-
--   H5
-
-    ![h5](https://api-catch.ranesuangyu.top/images/20220621/364f2b47d91ae5ae82a33d33854e2540.png)
-
--   小程序(体验版-需申请体验)
-
-    ![小程序](http://api-catch.ranesuangyu.top/images/20220621/8d4388315ef5b8630d0c0b3963d1ba6b.jpg)
-
 ## 安装使用
 
 -   安装依赖
 
 ```bash
-pnpm install
+npm install
 ```
 
 -   运行
 
 ```bash
-# 其他端请查看 package.json script
-pnpm dev:h5
+npm dev:mp-weixin
 ```
 
 -   打包
 
 ```bash
-# 其他端请查看 package.json script
-pnpm build:h5
+npm build:mp-weixin
 ```
-
--   更新依赖到最新（新手请忽略）
-
-```bash
-pnpm up
-# 打开HBuilder X alpha桌面程序-->点击上面的帮助-->历次更新说明-->获取最新版本号（如：3.7.2.20230217-alpha）
-npx @dcloudio/uvm 3.7.2.20230217-alpha
-```
-
-## Gitee 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-## [Gitee 贡献提交规范](https://www.conventionalcommits.org/zh-hans/v1.0.0/)
 
 ### 提交类型
 

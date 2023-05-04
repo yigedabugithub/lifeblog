@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from '@/hooks/router';
+import { articlesApi, homeApi } from '@/api/home';
+import { useRequest } from 'alova';
+import { Toast } from '@/utils/uniapi/prompt';
+
 const router = useRouter();
 
 const toArticle = () => {
@@ -8,81 +12,38 @@ const toArticle = () => {
 };
 
 const sysInfo = uni.getSystemInfoSync();
+const fieldList = ref([]);
+const hotArticles = ref([]);
 
-const list2 = [
-    {
-        image: 'https://cdn.uviewui.com/uview/swiper/swiper2.png',
-        title: '昨夜星辰昨夜风，画楼西畔桂堂东',
-    },
-    {
-        image: 'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-        title: '身无彩凤双飞翼，心有灵犀一点通',
-    },
-
-    {
-        image: 'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-        title: '身无彩凤双飞翼，心有灵犀一点通',
-    },
-    {
-        image: 'https://cdn.uviewui.com/uview/swiper/swiper3.png',
-        title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳',
-    },
-];
-const fieldList = [
-    {
-        name: '前端',
-        img: '',
-    },
-    {
-        name: '做菜',
-        img: '',
-    },
-    {
-        name: '养宠',
-        img: '',
-    },
-    {
-        name: '前端',
-        img: '',
-    },
-    {
-        name: '做菜',
-        img: '',
-    },
-    {
-        name: '养宠',
-        img: '',
-    },
-];
-
-const urls = [
-    'https://cdn.uviewui.com/uview/album/1.jpg',
-    'https://cdn.uviewui.com/uview/album/2.jpg',
-    'https://cdn.uviewui.com/uview/album/3.jpg',
-    'https://cdn.uviewui.com/uview/album/4.jpg',
-    'https://cdn.uviewui.com/uview/album/5.jpg',
-    'https://cdn.uviewui.com/uview/album/6.jpg',
-    'https://cdn.uviewui.com/uview/album/7.jpg',
-    'https://cdn.uviewui.com/uview/album/8.jpg',
-    'https://cdn.uviewui.com/uview/album/9.jpg',
-    'https://cdn.uviewui.com/uview/album/10.jpg',
-];
-
-const indexList = ref([] as any);
-const scrolltolower = () => {
-    loadmore();
-};
-
-const loadmore = () => {
-    for (let i = 0; i < 30; i++) {
-        indexList.value.push({
-            url: urls[1],
-        });
+// 文章列表
+const articleList = ref([] as any);
+let pageNum = ref(1);
+const finished = ref(false);
+const { send: articleData } = useRequest(articlesApi, { immediate: false });
+const articleDataHandle = async (pageNum) => {
+    const res = await articleData({ pageNum });
+    articleList.value = [...articleList.value, ...res?.data?.list];
+    if (articleList.value.length === res?.data?.total) {
+        finished.value = true;
+        return Toast('已加载全部');
     }
 };
 
+const scrolltolower = () => {
+    if (finished.value) return;
+    pageNum.value += 1;
+    articleDataHandle(pageNum.value);
+};
+
+const { send: initData } = useRequest(homeApi, { immediate: false });
+const initHandle = async () => {
+    const res = await initData();
+    hotArticles.value = res.data.hotArticles;
+    fieldList.value = res.data.fieldList;
+};
 onMounted(() => {
-    loadmore();
+    initHandle();
+    articleDataHandle(pageNum.value);
 });
 </script>
 
@@ -96,7 +57,7 @@ onMounted(() => {
             </view>
         </view>
         <swiper class="swiper-box" circular :indicator-dots="true" :autoplay="true" :interval="2000" :duration="500">
-            <swiper-item v-for="(item, index) in list2" :key="index">
+            <swiper-item v-for="(item, index) in hotArticles" :key="index">
                 <image mode="scaleToFill" :src="item.image"></image>
             </swiper-item>
         </swiper>
@@ -105,27 +66,43 @@ onMounted(() => {
                 <view class="title-tag"></view>
                 我的领域
             </view>
-            <scroll-view class="my-field" scroll-x="true">
-                <view v-for="(item, index) in fieldList" :key="index" class="my-field-item">
-                    <!-- <image :src="item.img"></image> -->
-                    <view style="display: inline-block">{{ item.name }}</view>
+            <u-scroll-list :indicator="false">
+                <view class="scroll-list" style="flex-direction: row; overflow-x: scroll">
+                    <view class="scroll-list__goods-item" v-for="(item, index) in fieldList" :key="index">
+                        <!-- <image class="scroll-list__goods-item__image" :src="item.img"></image> -->
+                        <u--image class="scroll-list__goods-item__image" mode="scaleToFill" radius="5" width="100px" height="60px" :src="item.img"></u--image>
+
+                        <text class="scroll-list__goods-item__text">{{ item.name }}</text>
+                    </view>
+                    <view class="scroll-list__show-more">
+                        <text class="scroll-list__show-more__text">查看更多</text>
+                        <u-icon name="arrow-leftward" color="#3c9cff" size="12"></u-icon>
+                    </view>
                 </view>
-            </scroll-view>
+            </u-scroll-list>
         </view>
-        <view class="newarticles-box">
+        <view class="articles-box">
             <view class="title">
                 <view class="title-tag"></view>
                 热门文章
             </view>
 
-            <view class="newarticles-list">
+            <view class="articles-list">
                 <u-list @scrolltolower="scrolltolower">
-                    <u-list-item v-for="(item, index) in indexList" :key="index">
-                        <u-cell :title="`列表长度-${index + 1}`">
-                            <template #icon>
-                                <u-avatar shape="square" size="35" :src="item.url" customStyle="margin: -3px 5px -3px 0"></u-avatar>
-                            </template>
-                        </u-cell>
+                    <u-list-item v-for="(item, index) in articleList" :key="index">
+                        <view class="article-item">
+                            <view class="article-item-img">
+                                <u--image mode="scaleToFill" radius="5" width="60px" height="60px" :src="item.img"></u--image>
+                            </view>
+                            <view class="article-item-databox">
+                                <view class="article-item-title">{{ item.title }}</view>
+                                <view class="article-item-content">{{ item.content }}</view>
+                                <view class="article-item-tag">
+                                    <view>2023-05-02</view>
+                                    <view>浏览6565次</view>
+                                </view>
+                            </view>
+                        </view>
                     </u-list-item>
                 </u-list>
             </view>
@@ -161,16 +138,54 @@ onMounted(() => {
     }
     .field-box {
         padding: 0 10px;
+        .scroll-list {
+            // @include flex(column);
+            display: flex;
+            flex-direction: column;
+
+            &__goods-item {
+                margin-right: 20px;
+                background-color: #fff;
+                border-radius: 5px;
+
+                &__image {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 4px;
+                }
+
+                &__text {
+                    color: #3c9cff;
+                    text-align: center;
+                    font-size: 12px;
+                    margin-top: 5px;
+                }
+            }
+
+            &__show-more {
+                background-color: #c5e2ff;
+                border-radius: 3px;
+                padding: 3px 6px;
+                @include flex(column);
+                align-items: center;
+
+                &__text {
+                    font-size: 12px;
+                    width: 12px;
+                    color: #3c9cff;
+                    line-height: 16px;
+                }
+            }
+        }
 
         .my-field {
             display: flex;
             .my-field-item {
-                margin-right: 10px;
-
                 width: 120px;
                 height: 80px;
                 background-color: #fff;
                 text-align: center;
+                margin-right: 10px;
             }
         }
         .my-field {
@@ -188,12 +203,29 @@ onMounted(() => {
             margin-right: 10px;
         }
     }
-    .newarticles-box {
+    .articles-box {
         padding: 0 10px;
         overflow: hidden;
         height: calc(100vh - 430px);
 
-        .newarticles-list {
+        .articles-list {
+            .article-item {
+                display: flex;
+                width: 100%;
+                height: 100px;
+                background-color: #fff;
+                padding: 15px 10px;
+                margin-bottom: 10px;
+                .article-item-img {
+                }
+                .article-item-databox {
+                    margin-left: 10px;
+                    font-size: 12px;
+                    .article-item-tag {
+                        display: flex;
+                    }
+                }
+            }
         }
     }
 }
